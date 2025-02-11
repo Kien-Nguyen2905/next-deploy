@@ -33,7 +33,7 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             cd ~/dev/next-deploy
-            git fetch --all
+            git fetch --all 
             git reset --hard origin/dev
             echo "${{secrets.ENV_DEVELOPMENT}}" > .env
             npm i --force
