@@ -1,8 +1,8 @@
-name: Deploy Production
+name: Deploy Development
 
 on:
   push:
-    branches: ["main"]
+    branches: ["dev"]
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
           node-version: 20.18.0
           cache: "npm"
       - name: Create .env file
-        run: echo "${{secrets.ENV_PRODUCTION}}" > .env
+        run: echo "${{secrets.ENV_DEVELOPMENT}}" > .env
       - run: npm i --force
       - run: npm run build
   deploy:
@@ -32,10 +32,10 @@ jobs:
           script: |
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            cd ~/main/next-deploy
-            git fetch --all
-            git reset --hard origin/main
-            echo "${{secrets.ENV_PRODUCTION}}" > .env
+            cd ~/dev/next-deploy
+            git fetch --all 
+            git reset --hard origin/dev
+            echo "${{secrets.ENV_DEVELOPMENT}}" > .env
             npm i --force
             npm run build
-            pm2 restart NextJs
+            pm2 restart Dev_NextJs
