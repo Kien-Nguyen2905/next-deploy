@@ -38,4 +38,4 @@ jobs:
             echo "${{secrets.ENV_DEVELOPMENT}}" > .env
             npm i --force
             npm run build
-            pm2 restart Dev NextJs
+            pm2 restart Dev_NextJs
