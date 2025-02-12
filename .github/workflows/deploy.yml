@@ -16,6 +16,12 @@ jobs:
           cache: "npm"
       - name: Create .env file
         run: echo "${{secrets.ENV_PRODUCTION}}" > .env
+      - name: Build docker image
+        run: docker build --platform linux/amd64 -t daisynguyennnnn/nextjs:v0
+      - name: Login Docker hub
+        run: docker login -u ${{secrets.DOCKERHUB_USERNAME}} -p ${{secrets.DOCKERHUB_PASSWORD}}
+      - name: Push docker image
+        run: docker push daisynguyennnnn/nextjs:v0
       - run: npm i --force
       - run: npm run build
   deploy:
@@ -30,12 +36,8 @@ jobs:
           password: ${{ secrets.PASSWORD_PRODUCTION }}
           port: ${{ secrets.PORT_PRODUCTION }}
           script: |
-            export NVM_DIR=~/.nvm
-            source ~/.nvm/nvm.sh
-            cd ~/main/next-deploy
-            git fetch --all
-            git reset --hard origin/main
-            echo "${{secrets.ENV_PRODUCTION}}" > .env
-            npm i --force
-            npm run build
-            pm2 restart NextJs
+            docker login -u ${{secrets.DOCKERHUB_USERNAME}} -p ${{secrets.DOCKERHUB_PASSWORD}}
+            docker pull daisynguyennnnn/nestjs:v0
+            docker stop dockernext
+            docker rm dockernext
+            docker run -d -p 3000:3000 --name dockernext daisynguyennnnn/nextjs:v0
