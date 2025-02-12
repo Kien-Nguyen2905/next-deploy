@@ -40,5 +40,5 @@ jobs:
             docker pull daisynguyennnnn/nestjs:v0
             docker stop dockernext
             docker rm dockernext
-            docker run -d -p 3000:3000 --name dockernext daisynguyennnnn/nextjs:v0
+            docker run -d -p 3000:3000 --name dockernext --restart --unless-stoped daisynguyennnnn/nextjs:v0
             docker image prune -f
